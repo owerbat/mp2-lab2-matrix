@@ -166,7 +166,7 @@ template <class ValType> // сложение
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 {
 	TVector<ValType> res(Size, StartIndex);
-	for (int i = StartIndex; i < res.Size; i++) {                        // StartIndex or 0?
+	for (int i = 0; i < res.Size; i++) {                        // StartIndex or 0?
 		res.pVector[i] = pVector[i/* + StartIndex*/] + v.pVector[i/* + v.StartIndex*/];
 	}
 	return res;
@@ -176,8 +176,8 @@ template <class ValType> // вычитание
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 {
 	TVector<ValType> res(Size, StartIndex);
-	for (int i = StartIndex; i < res.Size; i++) {                          // StartIndex or 0?
-		res.pVector[i] = pVector[i + StartIndex] - v.pVector[i + v.StartIndex];
+	for (int i = 0; i < res.Size; i++) {                          // StartIndex or 0?
+		res.pVector[i] = pVector[i/* + StartIndex*/] - v.pVector[i/* + v.StartIndex*/];
 	}
 	return res;
 } /*-------------------------------------------------------------------------*/
@@ -225,8 +225,6 @@ public:
 template <class ValType>
 TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
 {
-	//Size = s;
-	//StartIndex = 0;
 	for (int i = 0; i < Size; i++) {
 		TVector<ValType> tmp(Size - i, i);
 		pVector[i] = tmp;
