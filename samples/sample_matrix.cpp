@@ -28,27 +28,5 @@ void main()
   cout << "Matrix b = " << endl << b << endl;
   cout << "Matrix c = a + b" << endl << c << endl;
 
- /* cout << "\n\n\n\n\n";
-  for (i = 0; i < 5; i++) {
-	  for (j = 0; j < 5; j++) {
-		  cout << a[i][j] << " ";
-	  }
-	  cout << endl;
-  }
-  cout << "\n\n\n\n\n";
-  for (i = 0; i < 5; i++) {
-	  for (j = 0; j < 5; j++) {
-		  cout << b[i][j] << " ";
-	  }
-	  cout << endl;
-  }
-  cout << "\n\n\n\n\n";
-  for (i = 0; i < 5; i++) {
-	  for (j = 0; j < 5; j++) {
-		  cout << c[i][j] << " ";
-	  }
-	  cout << endl;
-  }
-  */
 }
 //---------------------------------------------------------------------------
