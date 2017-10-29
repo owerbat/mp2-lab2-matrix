@@ -91,7 +91,7 @@ TVector<ValType>::~TVector()
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
-	if ((pos < 0) || (pos > MAX_VECTOR_SIZE))
+	if ((pos < StartIndex) || (pos >= Size + StartIndex))
 		throw pos;
 	return pVector[pos - StartIndex];
 } /*-------------------------------------------------------------------------*/
@@ -116,16 +116,16 @@ bool TVector<ValType>::operator!=(const TVector &v) const
 template <class ValType> // присваивание
 TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
 {
-	if (this == &v)
-		return *this;
-	if (Size != v.Size) {
-		Size = v.Size;
-		delete[] pVector;
-		pVector = new ValType[Size];
-	}
-	StartIndex = v.StartIndex;
-	for (int i = 0; i < Size; i++) {
-		pVector[i] = v.pVector[i];
+	if (this != &v) {
+		if (Size != v.Size) {
+			Size = v.Size;
+			delete[] pVector;
+			pVector = new ValType[Size];
+		}
+		StartIndex = v.StartIndex;
+		for (int i = 0; i < Size; i++) {
+			pVector[i] = v.pVector[i];
+		}
 	}
 	return *this;
 } /*-------------------------------------------------------------------------*/
@@ -248,24 +248,36 @@ TMatrix<ValType>::TMatrix(const TVector<TVector<ValType> > &mt):
 template <class ValType> // сравнение
 bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
 {
+	if (Size != mt.Size)
+		return false;
+	if (StartIndex != mt.StartIndex)
+		return false;
+	for (int i = 0; i < Size; i++) {
+		if (pVector[i] != mt.pVector[i])
+			return false;
+	}
+	return true;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TMatrix<ValType>::operator!=(const TMatrix<ValType> &mt) const
 {
+	return !(*this == mt);
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // присваивание
 TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 {
-	if (Size != mt.Size) {
-		Size = mt.Size;
-		delete[] pVector;
-		pVector = new TVector<ValType> [Size];
-	}
-	StartIndex = mt.StartIndex;
-	for (int i = 0; i < Size; i++) {
-		pVector[i] = mt.pVector[i];
+	if (this != &mt) {
+		if (Size != mt.Size) {
+			Size = mt.Size;
+			delete[] pVector;
+			pVector = new TVector<ValType>[Size];
+		}
+		StartIndex = mt.StartIndex;
+		for (int i = 0; i < Size; i++) {
+			pVector[i] = mt.pVector[i];
+		}
 	}
 	return *this;
 } /*-------------------------------------------------------------------------*/
@@ -273,22 +285,16 @@ TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 template <class ValType> // сложение
 TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 {
+	if (Size != mt.Size)
+		throw - 1;
 	return TVector<TVector<ValType>>:: operator+(mt);
-	
-	/*TMatrix<ValType> res(*this);
-	int si = 0;
-	for (int i = 0; i < res.Size; i++) {
-		si = res.pVector[i].GetStartIndex();
-		for (int j = si; j < res.Size; j++) {
-			res[i][j] = pVector[i][j] + mt.pVector[i][j];
-		}
-	}
-	return res;*/
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычитание
 TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType> &mt)
 {
+	if (Size != mt.Size)
+		throw - 1;
 	return TVector<TVector<ValType>>:: operator-(mt);
 } /*-------------------------------------------------------------------------*/
 
